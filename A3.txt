@@ -1,0 +1,44 @@
+import pandas as pd
+import numpy as np
+
+df = pd.read_csv('iris.csv')
+df
+
+df.shape
+
+df.isnull().sum()
+
+df.dtypes
+
+df.info()
+
+df.drop(columns = 'Id', inplace = True)
+df
+
+df.describe()
+
+np.mean(df['SepalLengthCm'])
+
+np.std(df)
+
+np.min(df)
+
+np.max(df)
+
+df.quantile(0.25)
+
+df.quantile(0.50)
+
+df.quantile(0.75)
+
+iris_df = pd.read_csv('iris.csv')
+species = ['Iris-setosa', 'Iris-versicolor', 'Iris-virginica']
+subset_df = iris_df[iris_df['Species'].isin(species)]
+species_stats = subset_df.groupby('Species').describe()
+species_stats
+
+# df = pd.read_csv('data.csv')
+# grouped_stats = df.groupby('categorical_variable')['numeric_variable'].describe()
+# grouped_stats
+# category_values = df['categorical_variable'].unique()
+# category_values
