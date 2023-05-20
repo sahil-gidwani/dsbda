@@ -1,1 +1,33 @@
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+%matplotlib inline
+import seaborn as sns
 
+titanic_data = sns.load_dataset('titanic')
+df = pd.DataFrame(titanic_data)
+df
+
+sns.distplot(df['pclass'])
+
+sns.distplot(df['fare'], hist = True)
+
+sns.distplot(df['age'])
+
+sns.distplot(df['age'], bins=40)
+
+sns.distplot(df['age'], bins=20, kde=False, rug=True)
+
+sns.jointplot(x = df['age'], y = df['fare'], kind = 'scatter')
+
+sns.jointplot(x = df['age'], y = df['fare'], kind = 'hex')
+
+sns.pairplot(df)
+
+sns.barplot(x = df['sex'], y = df['fare'])
+
+sns.countplot(df, x='sex', hue='class')
+
+sns.heatmap(df.corr(), annot=True, cmap='coolwarm')
+
+sns.boxplot(df, x='class', y='age')
