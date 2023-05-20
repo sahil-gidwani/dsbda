@@ -1,0 +1,111 @@
+pip install textblob
+
+import nltk
+nltk.download('punkt')
+nltk.download('stopwords')
+nltk.download('wordnet')
+nltk.download('averaged_perceptron_tagger')
+
+from textblob import TextBlob 
+
+b=TextBlob("I havv good spelling")
+b.correct()
+
+b1 = TextBlob("Beautiful is better than ugly."
+              "Explicit is better than implicit." 
+              "Simple is better than complex.")
+b1.words
+
+b1.sentences
+
+b1.upper()
+
+b1.find("Simple")
+
+animals = TextBlob("cat dog octopus")
+animals.words
+
+animals.words.singularize()
+
+animals.words.pluralize()
+
+sen = TextBlob("We are no longer the knights who say Ni ." "We are now the knig ")
+sen.word_counts['the']
+
+sen.words.count('the')
+
+sen.words.count('Ni', case_sensitive=True)
+
+b = TextBlob("And now for something completely different.") 
+print(b.parse())
+
+apple_blob = TextBlob('apples') 
+banana_blob = TextBlob('bananas') 
+apple_blob < banana_blob
+
+blob = TextBlob("Now is better then never.") 
+blob.ngrams(n=3)
+
+from nltk.corpus import stopwords
+from nltk.stem import PorterStemmer, WordNetLemmatizer
+from nltk.tokenize import word_tokenize, sent_tokenize
+
+document = """
+This is a sample document. It contains multiple sentences. Each sentence showcases different preprocessing techniques.
+"""
+
+# Tokenization
+sentences = sent_tokenize(document)
+tokens = [word_tokenize(sentence) for sentence in sentences]
+
+from nltk.probability import FreqDist 
+fdist = FreqDist(word_tokenize(document))
+fdist.most_common(4)
+import matplotlib.pyplot as plt 
+fdist.plot(30,cumulative=False) 
+plt.show()
+
+# POS tagging
+pos_tags = [nltk.pos_tag(sentence_tokens) for sentence_tokens in tokens]
+
+# Stop words removal
+stop_words = set(stopwords.words('english'))
+filtered_tokens = []
+for sentence_tokens in tokens:
+    filtered_sentence = [word for word in sentence_tokens if word.lower() not in stop_words]
+    filtered_tokens.append(filtered_sentence)
+    
+# Stemming
+stemmer = PorterStemmer()
+stemmed_tokens = [[stemmer.stem(word) for word in sentence_tokens] for sentence_tokens in filtered_tokens]
+
+# Lemmatization
+lemmatizer = WordNetLemmatizer()
+lemmatized_tokens = [[lemmatizer.lemmatize(word) for word in sentence_tokens] for sentence_tokens in filtered_tokens]
+
+# Print the results
+print("Tokenization:")
+print(tokens)
+print("POS tagging:")
+print(pos_tags)
+print("Stop words removal:")
+print(filtered_tokens)
+print("Stemming:")
+print(stemmed_tokens)
+print("Lemmatization:")
+print(lemmatized_tokens)
+
+# Term frequency calculation
+from nltk.probability import FreqDist
+tf = FreqDist(token for sentence_tokens in tokens for token in sentence_tokens)
+tf.most_common()
+
+# Inverse Document Frequency (IDF) calculation
+from sklearn.feature_extraction.text import TfidfVectorizer
+tokens = word_tokenize(document)
+corpus = [' '.join(tokens)]
+vectorizer = TfidfVectorizer()
+vectorizer.fit(corpus)
+idf = vectorizer.idf_
+print("Inverse Document Frequency (IDF):")
+print(dict(zip(vectorizer.get_feature_names_out(), idf)))
