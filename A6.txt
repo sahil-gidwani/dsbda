@@ -1,0 +1,88 @@
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+%matplotlib inline
+import seaborn as sns
+
+df = pd.read_csv('iris.csv')
+df
+
+df.shape
+
+df.columns
+
+df.dtypes
+
+df.info()
+
+df.describe()
+
+df.isnull().sum()
+
+df.drop(columns="Id", inplace=True)
+df.head()
+
+sns.relplot(data = df, x = 'SepalWidthCm', y = 'SepalLengthCm', hue = 'Species', style = 'Species')
+
+sns.relplot(data = df, x = 'PetalLengthCm', y = 'PetalWidthCm', hue = 'Species', style = 'Species')
+
+sns.pairplot(df, hue = 'Species')
+
+plt.figure(figsize = (15, 10))
+plt.subplot(2, 2, 1)
+sns.boxplot(data = df, x = 'Species', y = 'PetalLengthCm')
+
+plt.subplot(2, 2, 2)
+sns.boxplot(data = df, x = 'Species', y = 'PetalWidthCm')
+
+plt.subplot(2, 2, 3)
+sns.boxplot(data = df, x = 'Species', y = 'SepalLengthCm')
+
+plt.subplot(2, 2, 4)
+sns.boxplot(data = df, x = 'Species', y = 'SepalWidthCm')
+
+sns.boxplot(data = df).set_title("Distribution of Sepal-Length, Sepal-Width, Petal-Length and Petal-Width for iris-setosa, iris-versicolor and iris-virginica")
+
+df.corr()
+
+plt.subplots(figsize = (8,8))
+sns.heatmap(df.corr(), annot = True, fmt = "f").set_title("Corelation of attributes")
+
+x = df.iloc[:, 0:4].values
+x
+
+y = df.iloc[:, 4].values
+y
+
+from sklearn.preprocessing import LabelEncoder
+le = LabelEncoder()
+y = le.fit_transform(y)
+y
+
+from sklearn.model_selection import train_test_split
+x_train, x_test, y_train, y_test = train_test_split(x, y, test_size = 0.3)
+
+from sklearn.naive_bayes import GaussianNB
+model = GaussianNB()
+model.fit(x_train, y_train)
+
+prediction = model.predict(x_test)
+prediction
+
+y_test
+
+from sklearn.metrics import confusion_matrix
+cm = confusion_matrix(y_test, prediction)
+cm
+
+from sklearn.metrics import accuracy_score
+accuracy = accuracy_score(y_test, prediction) * 100
+accuracy
+
+from sklearn.metrics import precision_score
+precision = precision_score(y_test, prediction, average = 'micro') *100
+precision
+
+from sklearn.metrics import recall_score
+recall = recall_score(y_test, prediction, average = 'micro') * 100
+recall
