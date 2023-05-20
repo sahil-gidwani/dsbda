@@ -1,1 +1,50 @@
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+%matplotlib inline
+import seaborn as sns
 
+df = pd.read_csv('train.csv')
+df
+
+df.shape
+
+df.columns
+
+df.dtypes
+
+df.info()
+
+df.describe()
+
+df.isnull().sum()
+
+sns.countplot(df['Sex'])
+
+sns.countplot(df['Survived'])
+
+df['Sex'].value_counts().plot(kind = 'pie', autopct = '%.2f')
+
+df['Survived'].value_counts().plot(kind = 'pie', autopct = '%.2f')
+
+sns.barplot(df['Survived'], df['Age'])
+
+sns.barplot(df['Sex'], df['Survived'])
+
+sns.barplot(df['Sex'],df['Age'], hue = df['Survived'])
+
+sns.boxplot(df['Sex'], df['Age'])
+
+sns.boxplot(df['Sex'], df['Age'], df['Survived'])
+
+pd.crosstab(df['Sex'], df['Survived'])
+
+pd.crosstab(df['Age'], df['Survived'])
+
+sns.heatmap(pd.crosstab(df['Sex'], df['Survived']))
+
+sns.heatmap(pd.crosstab(df['Age'], df['Survived']))
+
+sns.clustermap(pd.crosstab(df['Sex'], df['Survived']))
+
+sns.clustermap(pd.crosstab(df['Age'], df['Survived']))
