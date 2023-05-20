@@ -1,0 +1,87 @@
+import pandas as pd
+import numpy as np
+
+df = pd.read_csv('Social_Network_Ads.csv')
+df
+
+df.shape
+
+df.columns
+
+df.dtypes
+
+df.info()
+
+df.describe()
+
+x = df.iloc[:, [2, 3]].values
+x
+
+y = df.iloc[:, 4].values
+y
+
+from sklearn.model_selection import train_test_split
+x_train, x_test, y_train, y_test = train_test_split(x, y, test_size = 0.25, random_state = 0)
+
+from sklearn.preprocessing import StandardScaler
+sc=StandardScaler()
+x_train=sc.fit_transform(x_train)
+x_test=sc.fit_transform(x_test)
+
+from sklearn.linear_model import LogisticRegression
+classifier = LogisticRegression(random_state = 0)
+classifier.fit(x_train, y_train)
+
+y_pred = classifier.predict(x_test)
+y_pred
+
+y_test
+
+from sklearn.metrics import confusion_matrix
+cm = confusion_matrix(y_test, y_pred)
+cm
+
+tp = cm[1, 1]
+print('True Positive : ',tp)
+
+fp = cm[0, 1]
+print('False Positive : ',fp)
+
+fn = cm[1, 0]
+print('False Negative : ',fn)
+
+tn = cm[0, 0]
+print('True Negative : ',tn)
+
+accuracy_cm = ((tp + tn)/(tp + fp + fn + tn))
+print('Accuracy : ',accuracy_cm*100)
+
+error_rate_cm = ((fp + fn)/(tp + fp + fn + tn))
+print('Error Rate : ', error_rate_cm*100)
+
+precision_cm = (tp / (tp + fp))
+print('Precision : ',precision_cm*100)
+
+recall_cm = (tp / (tp + fn))
+print('Recall / Sensitivity : ', recall_cm*100)
+
+specificity_cm = (tn / (tn + fp))
+print('Specificity : ', specificity_cm*100)
+
+from sklearn.metrics import accuracy_score, precision_score, recall_score
+TN = cm[0, 0]
+FP = cm[0, 1]
+FN = cm[1, 0]
+TP = cm[1, 1]
+accuracy = accuracy_score(y_test, y_pred)
+error_rate = 1 - accuracy
+precision = precision_score(y_test, y_pred)
+recall = recall_score(y_test, y_pred)
+print("True Positives (TP):", TP)
+print("False Positives (FP):", FP)
+print("True Negatives (TN):", TN)
+print("False Negatives (FN):", FN)
+print("Accuracy:", accuracy)
+print("Error Rate:", error_rate)
+print("Precision:", precision)
+print("Recall:", recall)
