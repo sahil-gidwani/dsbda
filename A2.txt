@@ -1,0 +1,93 @@
+import pandas as pd
+import numpy as np
+
+data = {
+    'math_score': [71.0, 63.0, 71.0, 77.0, 63.0, np.nan, 66.0, 50.0, 60.0, 64.0, 63.0, 66.0, 60.0, 72.0, 60.0, 69.0, 72.0, 90.0, 70.0, 66.0, 61.0, np.nan, 65.0, 63.0, 78.0, 71.0, 78.0, 67.0, 75.0, 73.0],
+    'reading_score': [78, 86, 92, 95, 81, 92, 75, 100, 90, 89, 81, 95, 88, 80, 76, 83, 80, 95, 89, 91, 75, 77, 95, 86, 95, 84, 78, 79, 79, 78],
+    'writing_score': [65.0, 71.0, 64.0, 68.0, 70.0, np.nan, 67.0, 68.0, 61.0, 72.0, 62.0, 77.0, 73.0, 69.0, np.nan, 69.0, 20.0, 66.0, 73.0, 77.0, 74.0, 79.0, 60.0, 78.0, 66.0, 72.0, 73.0, 67.0, np.nan, np.nan],
+    'placement_score': [99.0, 100.0, 76.0, 84.0, 76.0, 89.0, 93.0, 200.0, 87.0, 80.0, 95.0, 90.0, 91.0, 98.0, 82.0, np.nan, 75.0, 85.0, 90.0, 100.0, 76.0, 82.0, 100.0, 82.0, np.nan, 89.0, 87.0, 89.0, 97.0, 75.0],
+    'club_join_date': [2018.0, np.nan, 2021.0, 2021.0, 2021.0, 2020.0, 2019.0, 2015.0, 2021.0, 2019.0, 2021.0, 2020.0, 2020.0, 2021.0, 2020.0, 2019.0, 2021.0, 2002.0, 2020.0, 2020.0, np.nan, 2018.0, 2021.0, 2019.0, 2019.0, 2018.0, 2018.0, 2018.0, 2020.0, 2020.0],
+    'placement_offer_count': [3.0, 3.0, 2.0, 2.0, 2.0, 3.0, 3.0, 3.0, 3.0, 2.0, 1.0, 3.0, 3.0, 3.0, 2.0, 1.0, 2.0, np.nan, 3.0, 3.0, 2.0, 3.0, 3.0, 2.0, 1.0, 3.0, 3.0, 3.0, 3.0, 2.0]
+}
+
+df = pd.DataFrame(data)
+
+df.shape
+
+df.isnull().sum()
+
+df.isnull()
+
+df['math_score']=df['math_score'].interpolate()
+df
+
+df['writing_score'] = df['writing_score'].fillna(method='ffill')
+df
+
+df['placement_score'] = df['placement_score'].fillna(method='bfill')
+df
+
+df['club_join_date'] = df['club_join_date'].replace(to_replace=np.nan,value='2019')
+df
+
+df['placement_offer_count']=df['placement_offer_count'].fillna('1')
+df
+
+df.isnull().sum()
+
+df.dtypes
+
+df['math_score']=df['math_score'].astype('int64')
+df['reading_score']=df['reading_score'].astype('int64')
+df['writing_score']=df['writing_score'].astype('int64')
+df['placement_score']=df['placement_score'].astype('int64')
+df['club_join_date']=df['club_join_date'].astype('int64')
+df['placement_offer_count']=df['placement_offer_count'].astype('int64')
+df.dtypes
+
+columns = ['math_score','reading_score','writing_score','placement_score']
+df.boxplot(columns)
+
+Q1 = df['math_score'].quantile(0.25)
+Q3 = df['math_score'].quantile(0.75)
+IQR = Q3 - Q1
+lower_lim = Q1 - 1.5*IQR
+upper_lim = Q3 + 1.5*IQR
+
+np.where(df['math_score'] < 60)
+
+np.where(df['math_score'] > 80)
+
+np.where(((df['placement_score'] > 75) & (df['placement_score'] <= 85)) 
+         & ((df['placement_offer_count'] > 2) | (df['placement_offer_count'] < 2) ))
+         
+df[(df['math_score'] < 60) | (df['math_score'] > 80)]
+
+df[((df['placement_score'] > 75) & (df['placement_score'] <= 85)) 
+   & ((df['placement_offer_count'] > 2) | (df['placement_offer_count'] < 2))]
+
+new_df1 = df[
+    ((df.math_score >= 60) & (df.math_score <= 80)) &
+    ((df.reading_score >= 75) & (df.reading_score <= 95)) &
+    ((df.writing_score >= 60) & (df.writing_score <= 80)) &
+    ((df.placement_score >= 75) & (df.placement_score <= 100)) &
+    ((df.club_join_date >= 2018) & (df.club_join_date <= 2021))]
+new_df1
+
+new_df1[((new_df1['placement_score'] >= 75) & (new_df1['placement_score'] <= 85)) 
+   & ((new_df1['placement_offer_count'] > 2) | (new_df1['placement_offer_count'] < 2))]
+   
+new_df2 = new_df1[
+    ((new_df1.placement_score < 75) & (new_df1.placement_offer_count==1)) |
+    (((new_df1.placement_score >= 75) & (new_df1.placement_score <= 85)) & (new_df1.placement_offer_count==2)) |
+    ((new_df1.placement_score > 85) & (new_df1.placement_offer_count==3))]
+new_df2
+
+new_df2[(new_df2['placement_score'] < 75) | (new_df2['placement_score'] > 100)]
+
+columns = ['math_score','reading_score','writing_score','placement_score']
+new_df2.boxplot(columns)
+
+from sklearn.preprocessing import StandardScaler
+scaling = StandardScaler()
+scaling.fit_transform(new_df2[['math_score','reading_score','writing_score','placement_score']])
