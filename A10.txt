@@ -1,1 +1,26 @@
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+%matplotlib inline
+import seaborn as sns
 
+df = pd.read_csv('iris.csv')
+df
+
+df.shape
+
+df.columns
+
+df.dtypes
+
+df.info()
+
+df.describe()
+
+sns.distplot(df['SepalLengthCm'])
+
+plt.hist(df['SepalLengthCm'])
+
+sns.boxplot(df['SepalLengthCm'])
+
+sns.boxplot(data = df, x = df['SepalLengthCm'], y = df['Species'])
