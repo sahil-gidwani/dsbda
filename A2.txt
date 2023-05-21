@@ -102,3 +102,9 @@ refined_df
 from sklearn.preprocessing import StandardScaler
 scaling = StandardScaler()
 scaling.fit_transform(new_df2[['math_score','reading_score','writing_score','placement_score']])
+
+import matplotlib.pyplot as plt 
+new_df2['math_score'].plot(kind = 'hist') 
+
+df['log_math'] = np.log10(df['math_score'])
+df['log_math'].plot(kind = 'hist')
