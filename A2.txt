@@ -88,6 +88,13 @@ new_df2[(new_df2['placement_score'] < 75) | (new_df2['placement_score'] > 100)]
 columns = ['math_score','reading_score','writing_score','placement_score']
 new_df2.boxplot(columns)
 
+from scipy import stats
+z = np.abs(stats.zscore(df['math_score']))
+z
+threshold = 0.18
+sample_outliers = np.where(z < threshold)
+sample_outliers
+
 from sklearn.preprocessing import StandardScaler
 scaling = StandardScaler()
 scaling.fit_transform(new_df2[['math_score','reading_score','writing_score','placement_score']])
