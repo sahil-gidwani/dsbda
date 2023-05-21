@@ -95,6 +95,10 @@ threshold = 0.18
 sample_outliers = np.where(z < threshold)
 sample_outliers
 
+refined_df=df 
+refined_df['reading_score'] = np.where(refined_df['reading_score'] > refined_df['reading_score'].quantile(0.75), refined_df['reading_score'].mean(), refined_df['reading_score'])
+refined_df
+
 from sklearn.preprocessing import StandardScaler
 scaling = StandardScaler()
 scaling.fit_transform(new_df2[['math_score','reading_score','writing_score','placement_score']])
