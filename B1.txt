@@ -78,3 +78,14 @@ package com.wordcount;
             JobClient.runJob(conf);    
         }    
     }    
+    
+/*------compilation steps---------------------
+start hadoop: 
+start-dfs.sh
+start-yarn.sh
+url - localhost:50070
+
+1)Export jar file:WordCountMr->export->java->JAR file
+2)Run Jar file: hadoop jar <jarfilepath> 	<inputfilepath> <outputfilepath>
+3)See output: hdfs dfs -cat <outputfilepath>
+*/
